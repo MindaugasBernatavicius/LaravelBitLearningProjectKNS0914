@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.app')
 @section('content')
     <h1>Welcome page</h1>
     {{-- @if ($var === "1")

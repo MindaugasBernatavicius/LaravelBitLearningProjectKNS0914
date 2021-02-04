@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.app')
 @section('content')
     {{-- Validation error, for invalid incoming data display logic --}}
     @if ($errors->any())

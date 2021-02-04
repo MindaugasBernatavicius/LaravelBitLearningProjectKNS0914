@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.app')
 @section('content')
 
     {{-- Validation error, for invalid incoming data display logic --}}
@@ -21,22 +21,28 @@
         <h1>{{ $post['title'] }}</h1>
         <p>{{ $post['text'] }}</p>
         <p style="font-size: 10px">Comment count: {{ count($post->comments) }} 
-            | <a href="{{ route('posts.show', $post['id']) }}">View post details and comment on it</a></p>
-        <div class="btn-group" style="overflow: auto">
-            <form style='float: left;' action="{{ route('posts.destroy', $post['id']) }}" method="POST">
-                @method('DELETE') @csrf
-                <input class="btn btn-danger" type="submit" value="DELETE"> 
-            </form>
-            &nbsp;
-            <form style='float: left;' action="{{ route('posts.show', $post['id']) }}" method="GET">
-                <input class="btn btn-primary" type="submit" value="UPDATE">
-            </form>
-        </div>
+            | <a href="{{ route('posts.show', $post['id']) }}">View post details and comment on it</a>
+            | Author: {{ $post['user']['name'] }} , {{ $post['user']['email'] }}</p>
+        {{-- Hide buttons if the user is not logged in  --}}
+        @if (auth()->check())
+            <div class="btn-group" style="overflow: auto">
+                @if (auth()->user()->id === $post['user_id'])
+                    <form style='float: left;' action="{{ route('posts.destroy', $post['id']) }}" method="POST">
+                        @method('DELETE') @csrf
+                        <input class="btn btn-danger" type="submit" value="DELETE"> 
+                    </form>
+                @endif
+                &nbsp;
+                <form style='float: left;' action="{{ route('posts.show', $post['id']) }}" method="GET">
+                    <input class="btn btn-primary" type="submit" value="UPDATE">
+                </form>
+            </div>
+        @endif
         <br>
         <hr>
     @endforeach
     <hr>
-    <form method="POST" action="/app4/posts">
+    <form method="POST" action="/posts">
         @csrf
 
         @error('title')

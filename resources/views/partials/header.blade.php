@@ -18,4 +18,7 @@
       </li>
     </ul>
   </div>
+  </div>
+    {{ Auth::user()['name'] }}
+  </div>
 </nav>

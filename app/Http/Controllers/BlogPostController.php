@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Gate; // nepamirškite namespace 
 
 class BlogPostController extends Controller {
     public function index(){
@@ -24,15 +25,18 @@ class BlogPostController extends Controller {
         $pb = new \App\Models\BlogPost();
         $pb->title = $request['title'];
         $pb->text = $request['text'];
-
+        $pb->user_id = auth()->user()->id; // Trying to get property 'id' of non-object
         return ($pb->save() !== 1) ? 
-            redirect('/app4/posts')->with('status_success', 'Post created!') : 
-            redirect('/app4/posts')->with('status_error', 'Post was not created!');
+            redirect('/posts')->with('status_success', 'Post created!') : 
+            redirect('/posts')->with('status_error', 'Post was not created!');
     }
 
     public function destroy($id){
+        if(Gate::denies('delete-post', \App\Models\Blogpost::find($id)))
+            return redirect()->back()->with('status_error', 'You can\'t delete this post!');
+            
         \App\Models\Blogpost::destroy($id);
-        return redirect('/app4/posts')->with('status_success', 'Post deleted!');
+        return redirect('/posts')->with('status_success', 'Post deleted!');
     }
 
     public function update($id, Request $request){
@@ -48,8 +52,8 @@ class BlogPostController extends Controller {
         $bp->text = $request['text'];
 
         return ($bp->save() !== 1) ? 
-            redirect('/app4/posts/' . $id)->with('status_success', 'Post updated!') : 
-            redirect('/app4/posts/' . $id)->with('status_error', 'Post was not updated!');
+            redirect('/posts/' . $id)->with('status_success', 'Post updated!') : 
+            redirect('/posts/' . $id)->with('status_error', 'Post was not updated!');
     }  
 
     public function storePostComment($id, Request $request){
