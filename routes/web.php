@@ -18,13 +18,13 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', function () { return view('welcome'); })->name('index');
 Route::get('/about-us', function () { return view('about'); })->name('about');
 
-Route::get('/posts', 'App\Http\Controllers\BlogPostController@index')->name('posts.index');
+Route::get('/posts', 'App\Http\Controllers\BlogPostController@index')->name('posts.index')->middleware('auth');
 Route::get('/posts/{id}', [BlogPostController::class, 'show'])->name('posts.show');
 Route::post('/posts', [BlogPostController::class, 'store']);
 Route::delete('/posts/{id}', [BlogPostController::class, 'destroy'])->name('posts.destroy');
 Route::put('/posts/{id}', [BlogPostController::class, 'update'])->name('posts.update');
-
 Route::post('/posts/{id}/comments', [BlogPostController::class, 'storePostComment'])->name('posts.comments.store');
+
 
 
 Route::get('/db', function () {
