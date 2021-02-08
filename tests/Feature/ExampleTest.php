@@ -12,10 +12,11 @@ class ExampleTest extends TestCase
      *
      * @return void
      */
-    public function testBasicTest()
+    public function test_givenImNotLoggedIn_whenVistingHomePage_thenIShouldSeeWelcomeMessage()
     {
         $response = $this->get('/');
-
         $response->assertStatus(200);
+        $response->assertSee('Welcome page');
+        $response->assertDontSee('!!!');
     }
 }

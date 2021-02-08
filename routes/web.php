@@ -18,12 +18,28 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', function () { return view('welcome'); })->name('index');
 Route::get('/about-us', function () { return view('about'); })->name('about');
 
-Route::get('/posts', 'App\Http\Controllers\BlogPostController@index')->name('posts.index')->middleware('auth');
+Route::get('/posts', 'App\Http\Controllers\BlogPostController@index')->name('posts.index');
 Route::get('/posts/{id}', [BlogPostController::class, 'show'])->name('posts.show');
 Route::post('/posts', [BlogPostController::class, 'store']);
 Route::delete('/posts/{id}', [BlogPostController::class, 'destroy'])->name('posts.destroy');
 Route::put('/posts/{id}', [BlogPostController::class, 'update'])->name('posts.update');
 Route::post('/posts/{id}/comments', [BlogPostController::class, 'storePostComment'])->name('posts.comments.store');
+
+
+Route::get('/changelanguage/{locale}', function ($locale) {
+    if (!in_array($locale, ['en', 'lt', 'es'])) abort(400);
+    session(['locale' => $locale]);
+    app()->setLocale($locale); // set the locale to current recurrent
+    return redirect()->back(); 
+});
+
+// Route::get('/welcome/{locale}', function ($locale) {
+//     print(App::getLocale($locale) . '<br>'); // dabartinė
+//     if (!in_array($locale, ['en', 'lt']))
+//         abort(400);
+//     App::setLocale($locale);
+//     print(App::getLocale($locale) . '<br>'); // pakeista
+// });
 
 
 

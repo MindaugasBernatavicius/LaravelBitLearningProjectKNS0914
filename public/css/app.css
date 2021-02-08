@@ -10944,4 +10944,13 @@ a.text-dark:focus {
   }
 }
 
+.page-title {
+  font-family: Arial;
+  font-size: 20px;
+  font-weight: bold;
+  color: #ff0000;
+  padding: 4px;
+  margin-top: 10px;
+}
+
 
