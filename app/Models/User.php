@@ -43,12 +43,19 @@ class User extends Authenticatable implements JWTSubject {
     protected $fillable = [ 'name', 'nickname', 'email', 'password', ];
     protected $hidden = [ 'password', 'remember_token', ];
     protected $casts = ['email_verified_at' => 'datetime',];
+    
     public function blogpost(){
         return $this->hasMany('App\Models\BlogPost');
     }
+
+    public function roles(){
+        return $this->belongsToMany(Role::class, 'user_role');
+    }
+
     public function getJWTIdentifier(){
         return $this->getKey();
     }
+    
     public function getJWTCustomClaims(){
         return [];
     }

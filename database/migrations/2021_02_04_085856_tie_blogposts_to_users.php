@@ -24,7 +24,7 @@ class TieBlogpostsToUsers extends Migration
         Schema::table('blog_posts', function (Blueprint $table) {
 	        // Būna useris “admin”, arba galima šioje vietoje sukurti naują userį jei egizistuojantys 
             $admin_uid = DB::table('users')->where('name', '=', 'Mindaugas')->first('id');
-            $table->unsignedBigInteger('user_id')->default($admin_uid->id);
+            $table->unsignedBigInteger('user_id')->default($admin_uid['id']);
             $table->foreign('user_id')
                 ->references('id')->on('users')
                 ->onDelete('cascade');
